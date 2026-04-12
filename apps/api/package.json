@@ -7,18 +7,24 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.0",
+    "@fastify/multipart": "^8.3.1",
+    "@repo/database": "workspace:*",
+    "@repo/shared": "workspace:*",
     "@trpc/server": "^10.45.0",
     "fastify": "^4.24.3",
-    "zod": "^3.22.4",
-    "@repo/database": "workspace:*"
+    "socket.io": "^4.8.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
     "tsx": "^4.1.4",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^4.1.4"
   }
-} 
+}

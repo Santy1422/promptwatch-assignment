@@ -1,0 +1,28 @@
+{
+  "name": "@repo/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/* --format esm",
+    "dev": "tsup src/* --watch --format esm"
+  },
+  "dependencies": {
+    "papaparse": "^5.5.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.5.2",
+    "tsup": "^8.0.2",
+    "typescript": "5.5.4"
+  }
+}

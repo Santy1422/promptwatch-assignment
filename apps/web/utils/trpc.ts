@@ -1,33 +1,29 @@
 import { createTRPCNext } from "@trpc/next";
 import { httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "@repo/api/src";
+import { API_KEY_STORAGE_KEY } from "@repo/shared";
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
     return {
       links: [
         httpBatchLink({
-          /**
-           * If you want to use SSR, you need to use the server's full URL
-           * @link https://trpc.io/docs/ssr
-           **/
-          url: `http://localhost:4000/trpc`,
+          url: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/trpc`,
+          headers() {
+            if (typeof window === "undefined") return {};
+            const key = localStorage.getItem(API_KEY_STORAGE_KEY);
+            return key ? { "x-api-key": key } : {};
+          },
         }),
       ],
-      /**
-       * @link https://tanstack.com/query/v4/docs/reference/QueryClient
-       **/
       queryClientConfig: {
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1 minute
+            refetchOnWindowFocus: false,
           },
         },
       },
     };
   },
-  /**
-   * @link https://trpc.io/docs/ssr
-   **/
   ssr: false,
 });

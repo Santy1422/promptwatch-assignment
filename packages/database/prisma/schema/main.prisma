@@ -8,3 +8,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ApiKey {
+  id        String     @id @default(cuid())
+  key       String     @unique @default(uuid())
+  label     String?
+  createdAt DateTime   @default(now())
+  entries   UrlEntry[]
+}
+
+model UrlEntry {
+  id                  String   @id @default(cuid())
+  url                 String
+  domain              String
+  title               String
+  aiModelMentioned    String
+  citationsCount      Int
+  sentiment           String
+  visibilityScore     Float
+  competitorMentioned String
+  queryCategory       String
+  lastUpdated         DateTime
+  trafficEstimate     Int
+  domainAuthority     Int
+  mentionsCount       Int
+  positionInResponse  Int
+  responseType        String
+  geographicRegion    String
+  createdAt           DateTime @default(now())
+
+  apiKey              ApiKey   @relation(fields: [apiKeyId], references: [id])
+  apiKeyId            String
+
+  @@unique([apiKeyId, url])
+  @@index([domain])
+  @@index([lastUpdated])
+  @@index([aiModelMentioned])
+  @@index([apiKeyId])
+}
