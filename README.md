@@ -1,345 +1,259 @@
-# Frontend & Full-Stack Developer Assignment
+# AI Visibility Dashboard
 
-This repository serves as a technical assignment for frontend and full-stack developer candidates at [Promptwatch](https://promptwatch.com/). It provides a modern, production-ready monorepo foundation that you can build upon to demonstrate your skills.
+Full-stack dashboard to track and analyze URL mentions across AI models (ChatGPT, Claude, Gemini, Perplexity). Upload CSV data, visualize trends, filter and export — all in real-time.
 
-**About Promptwatch**: Promptwatch helps companies monitor and optimize their brand visibility across AI search engines like ChatGPT, Claude, Perplexity, and other AI platforms. We're building the future of AI search optimization.
+## Features
 
-## 📋 Assignment Instructions
+### Core
+- **CSV Upload** — Drag & drop with server-side parsing, file validation, and real-time progress via WebSocket
+- **Data Table** — Sortable columns, search by URL/title, filter by AI model/sentiment/domain, pagination (20/page)
+- **Charts** — Bar chart (top 10 domains by count + avg visibility score), line chart (entries over time by `last_updated`)
+- **Stats Cards** — Total URLs, unique domains, avg visibility score, most active AI model
+- **CSV Export** — Download all entries as CSV with original column format
 
-### What You Need to Build
+### Bonus
+- **Real-time updates** — Socket.IO pushes upload progress and data refresh events
+- **Data validation** — Zod schemas, CSV row validation, type coercion (parseInt/parseFloat/Date)
+- **Unit tests** — 16 tests with Vitest covering domain extraction, row validation, CSV mapping
+- **API key system** — Frictionless: auto-generated on first visit, recover from any device, logout/switch
+- **MCP Server** — Claude Desktop & Claude Code integration with 4 tools (upload_csv, query_urls, get_stats, get_url_detail)
+- **Shared package** — `@repo/shared` deduplicates logic across API, MCP, and frontend
 
-Your task is to create a **CSV Upload and Data Management System** that demonstrates your full-stack development skills. This assignment simulates real-world functionality similar to what we build at Promptwatch.
+## Tech Stack
 
-### Core Requirements
+| Layer | Tech |
+|---|---|
+| Frontend | Next.js 14 (Pages Router) + TypeScript + Tailwind CSS v4 + Recharts |
+| Backend | Fastify + tRPC v10 + Zod |
+| Database | PostgreSQL + Prisma ORM |
+| Real-time | Socket.IO (room-based per API key) |
+| CSV Parsing | papaparse (server-side) |
+| MCP | @modelcontextprotocol/sdk |
+| Monorepo | Turborepo + pnpm workspaces |
+| Testing | Vitest |
 
-**1. CSV File Upload Interface**
-- Create a file upload component that accepts CSV files (`urls.csv`)
-- Include proper file validation (file type, size limits, etc.)
-- Show upload progress and success/error states (optional)
-
-**2. Backend API Integration**
-- Build a tRPC endpoint to handle CSV content
-- Store the parsed data in the PostgreSQL database using Prisma
-- Create a database schema for storing the data
-
-**3. Data Display & Management**
-- Display uploaded CSV data in a well-designed table on the main page
-- Include features like pagination, sorting, or filtering
-- Group by domain, show a little chart of occurences per website
-- Create a line chart based on `last_updated`
-
-### Technical Specifications
-
-- **Frontend**: Use the existing Next.js setup with React and TypeScript
-- **Backend**: Extend the tRPC API with new endpoints for file handling
-- **Database**: Design appropriate Prisma models for storing CSV data
-- **UI/UX**: Make it look professional - add your preferred styling solution
-
-### What We're Evaluating
-
-✅ **Code Quality**: Clean, readable, well-structured TypeScript code  
-✅ **Full-Stack Integration**: Seamless frontend-backend communication via tRPC  
-✅ **Database Design**: Thoughtful Prisma schema and data modeling  
-✅ **User Experience**: Intuitive interface with proper loading states and error handling  
-✅ **Error Handling**: Robust error management throughout the application  
-✅ **Creativity**: Your choice of styling, additional features, and problem-solving approach  
-
-### Bonus Points
-
-- Add data validation and sanitization
-- Implement real-time upload progress
-- Include data export functionality
-- Write basic tests
-
-### Getting Started
-
-1. Follow the setup instructions below to get the development environment running
-2. Explore the existing codebase to understand the tRPC and Prisma setup
-3. Design your database schema for storing CSV data
-4. Build the upload functionality step by step
-5. Create a great user interface to showcase your work
-
-**Time Expectation**: This assignment typically takes 4-8 hours depending on your experience level and how much you want to polish it.
-
-### How to Submit Your Work
-
-**Clone this repository** to get started:
-
-```bash
-git clone https://github.com/promptwatch-com/promptwatch-assignment
-cd promptwatch-assignment
-```
-
-This allows you to:
-- Work on your solution locally
-- Commit your progress as you build features
-- Share your completed work by creating a zip file or new repository
-
-Follow the setup instructions below to get your development environment running.
-
-## 🏗️ Architecture Overview
-
-This is a **Turborepo monorepo** with a complete full-stack setup:
+## Architecture
 
 ```
-📁 apps/
-  ├── 🌐 web/          → Next.js frontend (React + TypeScript)
-  └── 🚀 api/          → Fastify backend with tRPC (TypeScript)
-📁 packages/
-  ├── 🗄️ database/     → Prisma ORM + PostgreSQL
-  ├── ⚙️ config-*/     → Shared ESLint & TypeScript configs
-  └── 🐳 docker-compose/ → Local development infrastructure
-📄 domains.csv         → Sample data file
+apps/
+  web/              → Next.js frontend (React + TypeScript + Tailwind)
+  api/              → Fastify backend (tRPC + Socket.IO)
+packages/
+  database/         → Prisma ORM + PostgreSQL schema
+  shared/           → Shared utilities (CSV parsing, validation, domain extraction)
+  mcp/              → MCP server for Claude integration
+  config-*/         → Shared ESLint & TypeScript configs
+  docker-compose/   → Docker infrastructure
 ```
 
-### Tech Stack
-
-**Frontend (Next.js)**
-- ⚛️ React 18 with TypeScript
-- 🔄 tRPC for type-safe API calls
-- 🎨 Pages Router (ready for your UI framework of choice)
-
-**Backend (Fastify + tRPC)**
-- ⚡ Fastify server for high performance
-- 🔄 tRPC for end-to-end type safety
-- 📝 TypeScript throughout
-- 🛡️ CORS configured for development
-
-**Database & ORM**
-- 🐘 PostgreSQL database
-- 🔄 Prisma ORM with full TypeScript support
-- 🌱 Database seeding capabilities
-- 📦 Migration system ready
-
-**Development Experience**
-- 🏗️ Turborepo for fast builds and caching
-- 🔧 ESLint + Prettier for code quality
-- 🐳 Docker Compose for easy local setup
-- 📦 PNPM for efficient package management
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
+- Node.js 18+
+- pnpm
+- PostgreSQL (via Docker, Homebrew, or Postgres.app)
 
-- **Node.js** 18+ 
-- **PNPM** (recommended) or npm/yarn
-- **Docker** & **Docker Compose**
-
-### 1. Install Dependencies
+### 1. Install dependencies
 
 ```bash
 pnpm install
 ```
 
-### 2. Start Local Database
+### 2. Start PostgreSQL
 
+**Option A — Docker:**
 ```bash
-# Start PostgreSQL database in the background
-cd packages/docker-compose
-docker-compose up -d
+cd packages/docker-compose && docker-compose up -d
 ```
 
-The database will be available at `localhost:5432` with:
-- **Database**: `repo_development` 
-- **Username**: `repo`
-- **Password**: `repo`
-
-### 3. Set Up Environment Variables
-
-Create `.env` files in the appropriate directories:
-
+**Option B — Homebrew (macOS):**
 ```bash
-# For the database package
-echo "DATABASE_URL=postgresql://repo:repo@localhost:5432/repo_development" > packages/database/.env
-
-# For the web app (if needed)
-echo "DATABASE_URL=postgresql://repo:repo@localhost:5432/repo_development" > apps/web/.env
+brew install postgresql@17
+brew services start postgresql@17
+createuser -s repo
+psql -U $(whoami) -d postgres -c "ALTER USER repo WITH PASSWORD 'repo';"
+createdb -U repo repo_development
 ```
 
-### 4. Set Up Database Schema
+### 3. Configure environment
 
 ```bash
-# Generate Prisma client and apply migrations
-pnpm run generate
+# Root .env (used by Prisma)
+echo "DATABASE_URL=postgresql://repo:repo@localhost:5432/repo_development" > .env
+
+# API .env
+echo "DATABASE_URL=postgresql://repo:repo@localhost:5432/repo_development" > apps/api/.env
+```
+
+### 4. Set up database
+
+```bash
 pnpm run db:push
-
-# Seed with sample data
-pnpm run db:seed
+pnpm run generate
 ```
 
-### 5. Start Development Servers
+### 5. Build shared package
 
 ```bash
-# Start both frontend and backend in development mode
-pnpm run dev
+cd packages/shared && pnpm run build && cd ../..
 ```
 
-This starts:
-- 🌐 **Frontend**: http://localhost:3000
-- 🚀 **API**: http://localhost:4000
-- 📡 **tRPC endpoint**: http://localhost:4000/trpc
-- ❤️ **Health check**: http://localhost:4000/health
+### 6. Start dev servers
 
-## 📂 Project Structure Explained
-
-### `apps/web/` - Next.js Frontend
-- **Pages Router** setup with TypeScript
-- **tRPC client** configured for type-safe API calls
-- Ready for your choice of UI framework (Tailwind, Material-UI, etc.)
-- Connected to the backend via tRPC
-
-### `apps/api/` - Backend API
-- **Fastify server** for high performance
-- **tRPC routers** for type-safe API endpoints
-- **CORS** enabled for local development
-- Health check endpoint included
-
-### `packages/database/` - Database Layer
-- **Prisma ORM** with PostgreSQL
-- Database schema in `prisma/schema/main.prisma`
-- Seeding script in `src/seed.ts`
-- Generated TypeScript types
-
-### `packages/config-*/` - Shared Configuration
-- **ESLint configs** for consistent code style
-- **TypeScript configs** shared across the monorepo
-
-## 🛠️ Available Scripts
-
-### Root Level Scripts
 ```bash
-pnpm run dev          # Start all development servers
-pnpm run build        # Build all apps and packages
-pnpm run lint         # Lint all packages
-pnpm run format       # Format code with Prettier
-
-# Database operations
-pnpm run db:migrate:dev    # Create and apply migrations
-pnpm run db:push          # Push schema changes (dev only)
-pnpm run db:seed          # Seed database with sample data
-pnpm run generate         # Generate Prisma client
+pnpm --filter web dev &
+pnpm --filter @repo/api dev &
 ```
 
-### Individual App Scripts
-```bash
-# Frontend (from apps/web/)
-pnpm run dev          # Start Next.js dev server
-pnpm run build        # Build for production
-pnpm run start        # Start production build
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:4000
+- **WebSocket**: ws://localhost:4000
 
-# Backend (from apps/api/)
-pnpm run dev          # Start Fastify dev server with hot reload
-pnpm run build        # Compile TypeScript
-pnpm run start        # Start production build
+## How It Works
+
+### First Visit
+1. Open http://localhost:3000
+2. An API key is generated automatically and shown in the header
+3. Upload a CSV file — data appears in real-time
+4. **Save your API key** to access your data later
+
+### Recovering Data
+1. Click **Recover** in the header
+2. Paste your API key
+3. All your data loads instantly
+
+### CSV Format
+
+The CSV must have these 15 columns (snake_case headers):
+
+```
+url, title, ai_model_mentioned, citations_count, sentiment,
+visibility_score, competitor_mentioned, query_category, last_updated,
+traffic_estimate, domain_authority, mentions_count, position_in_response,
+response_type, geographic_region
 ```
 
-## 🗄️ Database Operations
+A sample file is provided at `domains.csv`.
 
-### Viewing Your Data
-```bash
-# Open Prisma Studio to browse your database
-cd packages/database
-pnpm run studio
-```
-
-### Schema Changes
-1. Modify `packages/database/prisma/schema/main.prisma`
-2. Run `pnpm run db:push` (development) or create migration
-3. Run `pnpm run generate` to update TypeScript types
-
-### Adding Sample Data
-Edit `packages/database/src/seed.ts` and run `pnpm run db:seed`
-
-## 🎯 What You Can Build
-
-This foundation is perfect for building:
-
-- **📊 Dashboard Applications** - Analytics, admin panels, data visualization
-- **🛒 E-commerce Platforms** - Product catalogs, shopping carts, user management  
-- **📝 Content Management** - Blogs, documentation, media libraries
-- **👥 Social Platforms** - User profiles, feeds, messaging systems
-- **🎮 Real-time Applications** - Chat apps, collaborative tools, games
-- **📱 API-first Applications** - Mobile backends, microservices, integrations
-
-## 🔧 Customization & Extension
-
-### Adding UI Components
-```bash
-# Example: Add Tailwind CSS
-cd apps/web
-pnpm add tailwindcss postcss autoprefixer
-pnpm tailwindcss init -p
-```
-
-### Adding New API Endpoints
-1. Create new router in `apps/api/src/routers/`
-2. Add to `apps/api/src/routers/index.ts`
-3. Use in frontend with full type safety!
-
-### Database Models
-Add models to `packages/database/prisma/schema/main.prisma`:
+## Database Schema
 
 ```prisma
-model User {
-  id    String @id @default(cuid())
-  email String @unique
-  name  String?
-  posts Post[]
+model ApiKey {
+  id        String     @id @default(cuid())
+  key       String     @unique @default(uuid())
+  label     String?
+  createdAt DateTime   @default(now())
+  entries   UrlEntry[]
 }
 
-model Post {
-  id     String @id @default(cuid())
-  title  String
-  author User   @relation(fields: [authorId], references: [id])
-  authorId String
+model UrlEntry {
+  id                  String   @id @default(cuid())
+  url                 String
+  domain              String
+  title               String
+  aiModelMentioned    String
+  citationsCount      Int
+  sentiment           String
+  visibilityScore     Float
+  competitorMentioned String
+  queryCategory       String
+  lastUpdated         DateTime
+  trafficEstimate     Int
+  domainAuthority     Int
+  mentionsCount       Int
+  positionInResponse  Int
+  responseType        String
+  geographicRegion    String
+  createdAt           DateTime @default(now())
+  apiKey              ApiKey   @relation(fields: [apiKeyId], references: [id])
+  apiKeyId            String
+
+  @@unique([apiKeyId, url])
+  @@index([domain])
+  @@index([lastUpdated])
+  @@index([aiModelMentioned])
+  @@index([apiKeyId])
 }
 ```
 
-## 🐛 Troubleshooting
+Upserts on the compound key `(apiKeyId, url)` �� duplicate uploads update existing entries cleanly.
 
-### Database Connection Issues
-```bash
-# Check if PostgreSQL is running
-docker-compose ps
+## API Endpoints
 
-# Restart database
-cd packages/docker-compose
-docker-compose down && docker-compose up -d
+### tRPC Procedures (all scoped by API key via `x-api-key` header)
 
-# Check logs
-docker-compose logs postgres_database
+| Procedure | Type | Description |
+|---|---|---|
+| `apiKeys.generate` | mutation | Generate a new API key |
+| `apiKeys.recover` | mutation | Validate an existing key and return entry count |
+| `urls.upload` | mutation | Bulk upsert entries from parsed CSV |
+| `urls.list` | query | Paginated list with search, filters, sorting |
+| `urls.stats` | query | Aggregated stats (by domain, model, sentiment, date) |
+| `urls.filters` | query | Available filter options (domains, models, sentiments) |
+
+### REST
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/upload` | POST | Multipart CSV file upload with real-time progress |
+
+## MCP Server (Claude Integration)
+
+The MCP server lets Claude upload CSVs and query your data directly.
+
+### Setup for Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "promptwatch": {
+      "command": "npx",
+      "args": ["tsx", "packages/mcp/src/index.ts"],
+      "env": {
+        "DATABASE_URL": "postgresql://repo:repo@localhost:5432/repo_development"
+      }
+    }
+  }
+}
 ```
 
-### Port Conflicts
-- Frontend (3000): Change in `apps/web/package.json`
-- Backend (4000): Set `PORT` environment variable
-- Database (5432): Change in `packages/docker-compose/docker-compose.yml`
+### Setup for Claude Code
 
-### Build Issues
 ```bash
-# Clean and reinstall
-rm -rf node_modules **/**/node_modules pnpm-lock.yaml
-pnpm install
-
-# Regenerate Prisma client
-pnpm run generate
+claude mcp add promptwatch npx tsx packages/mcp/src/index.ts
 ```
 
-## 📚 Next Steps
+### Available MCP Tools
 
-1. **Explore the Code** - Look at the example tRPC endpoint and frontend integration
-2. **Define Your Schema** - Add database models for your application
-3. **Build Features** - Create new API endpoints and frontend pages
-4. **Style Your App** - Add your preferred UI framework and design system
-5. **Deploy** - The setup is production-ready for platforms like Vercel, Railway, or Docker
+| Tool | Description |
+|---|---|
+| `upload_csv` | Upload a CSV file by path |
+| `query_urls` | Query entries with filters, sorting, pagination |
+| `get_stats` | Get aggregated statistics |
+| `get_url_detail` | Get full details for a specific URL |
 
-## 🤝 Need Help?
+All tools require an `apiKey` parameter — use the key from the dashboard.
 
-- **tRPC Documentation**: https://trpc.io/docs
-- **Prisma Documentation**: https://www.prisma.io/docs
-- **Next.js Documentation**: https://nextjs.org/docs
-- **Turborepo Documentation**: https://turbo.build/repo/docs
+## Tests
 
----
+```bash
+cd apps/api && pnpm test
+```
 
-**Happy coding! 🚀** Show us what you can build with this foundation.
+16 tests covering:
+- `extractDomain` — URL parsing, www stripping, subdomain handling
+- `isValidRow` — Required fields, numeric validation
+- `mapCsvRow` — Snake_case to camelCase, type coercion, date parsing
+
+## Scripts
+
+```bash
+pnpm run dev              # Start all dev servers (requires Docker)
+pnpm run build            # Build all packages
+pnpm run db:push          # Push Prisma schema to database
+pnpm run generate         # Generate Prisma client
+pnpm --filter web dev     # Start frontend only
+pnpm --filter @repo/api dev  # Start API only
+```
