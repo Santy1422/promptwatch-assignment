@@ -13,8 +13,8 @@
     }
   },
   "scripts": {
-    "build": "tsup src/* --format esm",
-    "dev": "tsup src/* --watch --format esm"
+    "build": "tsup src/* --format esm --dts",
+    "dev": "tsup src/* --watch --format esm --dts"
   },
   "dependencies": {
     "papaparse": "^5.5.3",
