@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build": "pnpm --filter @repo/database run generate && pnpm --filter @repo/database run build && pnpm --filter @repo/shared run build && pnpm --filter @repo/api run build",
-    "start": "node apps/api/dist/index.js",
+    "start": "pnpm --filter @repo/database run db:push && node apps/api/dist/index.js",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:push": "turbo run db:push",

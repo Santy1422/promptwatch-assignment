@@ -32,4 +32,4 @@ RUN pnpm --filter @repo/database run generate && \
 
 EXPOSE 4000
 
-CMD ["node", "apps/api/dist/index.js"]
+CMD ["sh", "-c", "pnpm --filter @repo/database run db:push && node apps/api/dist/index.js"]
