@@ -1,0 +1,30 @@
+FROM node:20-slim AS base
+RUN corepack enable && corepack prepare pnpm@10.7.1 --activate
+
+WORKDIR /app
+
+# Copy workspace config
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+
+# Copy all package.json files for install
+COPY packages/database/package.json packages/database/
+COPY packages/shared/package.json packages/shared/
+COPY packages/mcp/package.json packages/mcp/
+COPY apps/api/package.json apps/api/
+COPY apps/web/package.json apps/web/
+
+RUN pnpm install --frozen-lockfile
+
+# Copy source
+COPY packages/database/ packages/database/
+COPY packages/shared/ packages/shared/
+COPY apps/api/ apps/api/
+
+# Build
+RUN pnpm --filter @repo/database run generate && \
+    pnpm --filter @repo/shared run build && \
+    pnpm --filter @repo/api run build
+
+EXPOSE 4000
+
+CMD ["node", "apps/api/dist/index.js"]

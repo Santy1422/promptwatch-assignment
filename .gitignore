@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 node_modules
 .pnp
@@ -36,10 +34,12 @@ apps/api/.env
 
 # build output
 dist/
-packages/shared/dist/
 
 # study guide
 STUDY_GUIDE.md
 
 # turbo
 .turbo
+
+# sample data
+urls.csv

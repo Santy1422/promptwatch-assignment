@@ -225,12 +225,6 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(zod@3.25.76)
-      '@repo/database':
-        specifier: workspace:*
-        version: link:../database
-      '@repo/shared':
-        specifier: workspace:*
-        version: link:../shared
       zod:
         specifier: ^3.22.4
         version: 3.25.76
@@ -238,9 +232,6 @@ importers:
       '@types/node':
         specifier: ^20.9.0
         version: 20.19.9
-      '@types/papaparse':
-        specifier: ^5.5.2
-        version: 5.5.2
       tsx:
         specifier: ^4.1.4
         version: 4.19.1
