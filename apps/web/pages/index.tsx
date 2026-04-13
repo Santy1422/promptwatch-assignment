@@ -51,25 +51,21 @@ export default function Dashboard() {
         </header>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-          {/* No data yet: upload + MCP instructions */}
+          {/* Upload - always visible */}
           {!statsQuery.isLoading && !hasData && (
-            <>
-              <div className="text-center pt-8 pb-2">
-                <h2 className="text-xl font-semibold mb-1">Upload your CSV to get started</h2>
-                <p className="text-sm text-muted-foreground">
-                  Import your AI visibility data and see analytics instantly
-                </p>
-              </div>
-              <CsvUpload onSuccess={handleUploadSuccess} />
-              <McpSetup />
-            </>
+            <div className="text-center pt-8 pb-2">
+              <h2 className="text-xl font-semibold mb-1">Upload your CSV to get started</h2>
+              <p className="text-sm text-muted-foreground">
+                Import your AI visibility data and see analytics instantly
+              </p>
+            </div>
           )}
 
-          {/* Has data: full dashboard */}
+          <CsvUpload onSuccess={handleUploadSuccess} />
+
+          {/* Dashboard */}
           {(hasData || statsQuery.isLoading) && (
             <>
-              <CsvUpload onSuccess={handleUploadSuccess} />
-
               <StatsCards
                 totalUrls={stats?.totalUrls ?? 0}
                 uniqueDomains={stats?.uniqueDomains ?? 0}
@@ -87,6 +83,9 @@ export default function Dashboard() {
               <DataTable />
             </>
           )}
+
+          {/* MCP - always visible */}
+          <McpSetup />
         </main>
 
         <footer className="border-t mt-8">
