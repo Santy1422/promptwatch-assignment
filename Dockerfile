@@ -10,18 +10,23 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY packages/database/package.json packages/database/
 COPY packages/shared/package.json packages/shared/
 COPY packages/mcp/package.json packages/mcp/
+COPY packages/config-eslint/package.json packages/config-eslint/
+COPY packages/config-typescript/package.json packages/config-typescript/
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
 
 RUN pnpm install --frozen-lockfile
 
 # Copy source
+COPY packages/config-eslint/ packages/config-eslint/
+COPY packages/config-typescript/ packages/config-typescript/
 COPY packages/database/ packages/database/
 COPY packages/shared/ packages/shared/
 COPY apps/api/ apps/api/
 
-# Build
+# Build: generate prisma → build database dist → build shared → build api
 RUN pnpm --filter @repo/database run generate && \
+    pnpm --filter @repo/database run build && \
     pnpm --filter @repo/shared run build && \
     pnpm --filter @repo/api run build
 

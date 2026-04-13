@@ -11,6 +11,7 @@ cmds = [
 [phases.build]
 cmds = [
   "pnpm --filter @repo/database run generate",
+  "pnpm --filter @repo/database run build",
   "pnpm --filter @repo/shared run build",
   "pnpm --filter @repo/api run build"
 ]
