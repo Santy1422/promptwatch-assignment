@@ -35,7 +35,11 @@ apps/api/.env
 .mcp.json
 
 # build output
+dist/
 packages/shared/dist/
+
+# study guide
+STUDY_GUIDE.md
 
 # turbo
 .turbo

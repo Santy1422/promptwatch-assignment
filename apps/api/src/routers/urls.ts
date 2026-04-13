@@ -60,7 +60,7 @@ export const urlsRouter = router({
         aiModel: z.string().optional(),
         sentiment: z.string().optional(),
         search: z.string().optional(),
-        sortBy: z.enum(SORTABLE_FIELDS as readonly [string, ...string[]]).default("lastUpdated"),
+        sortBy: z.enum(["domain", "title", "aiModelMentioned", "visibilityScore", "citationsCount", "positionInResponse", "lastUpdated", "sentiment"]).default("lastUpdated"),
         sortOrder: z.enum(["asc", "desc"]).default("desc"),
       })
     )

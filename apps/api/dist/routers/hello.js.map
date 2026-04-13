@@ -1,1 +1,0 @@
-{"version":3,"file":"hello.js","sourceRoot":"","sources":["../../src/routers/hello.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,YAAY,CAAC;AAErD,MAAM,CAAC,MAAM,WAAW,GAAG,MAAM,CAAC;IAChC,KAAK,EAAE,eAAe,CAAC,KAAK,CAAC,KAAK,IAAI,EAAE;QACtC,OAAO,mCAAmC,CAAC;IAC7C,CAAC,CAAC;CACH,CAAC,CAAC"}
