@@ -17,3 +17,8 @@ cmds = [
 
 [start]
 cmd = "node apps/api/dist/index.js"
+
+[phases.install.aptPkgs]
+
+[variables]
+NIXPACKS_NO_CACHE = "1"
