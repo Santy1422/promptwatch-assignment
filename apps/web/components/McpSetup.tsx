@@ -18,6 +18,7 @@ export function McpSetup() {
         promptwatch: {
           command: "npx",
           args: ["tsx", "packages/mcp/src/index.ts"],
+          cwd: "/path/to/promptwatch-assignment",
           env: { API_URL },
         },
       },
@@ -26,7 +27,7 @@ export function McpSetup() {
     2
   );
 
-  const claudeCodeCommand = `claude mcp add promptwatch -e API_URL=${API_URL} -- npx tsx packages/mcp/src/index.ts`;
+  const claudeCodeCommand = `cd /path/to/promptwatch-assignment && claude mcp add promptwatch -e API_URL=${API_URL} -- npx tsx packages/mcp/src/index.ts`;
 
   const handleCopy = async (text: string, label: string) => {
     await navigator.clipboard.writeText(text);

@@ -41,7 +41,9 @@ export function ApiKeyBar() {
         });
         setShowRecover(false);
         setRecoverInput("");
-        utils.invalidate();
+        utils.urls.stats.reset();
+        utils.urls.filters.reset();
+        utils.urls.list.reset();
       } else {
         toast({
           title: "Key not found",
@@ -57,7 +59,9 @@ export function ApiKeyBar() {
   const handleLogout = async () => {
     const newKey = await reset();
     setShowLogoutConfirm(false);
-    utils.invalidate();
+    utils.urls.stats.reset();
+    utils.urls.filters.reset();
+    utils.urls.list.reset();
     toast({
       title: "Session closed",
       description: "A new API key has been generated. Save your old key if you need to recover your data later.",
