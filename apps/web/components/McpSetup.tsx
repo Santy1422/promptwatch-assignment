@@ -12,13 +12,14 @@ export function McpSetup() {
 
   if (!apiKey) return null;
 
+  const projectPath = "/path/to/promptwatch-assignment";
+
   const claudeDesktopConfig = JSON.stringify(
     {
       mcpServers: {
         promptwatch: {
           command: "npx",
-          args: ["tsx", "packages/mcp/src/index.ts"],
-          cwd: "/path/to/promptwatch-assignment",
+          args: ["tsx", `${projectPath}/packages/mcp/src/index.ts`],
           env: { API_URL },
         },
       },
@@ -27,7 +28,7 @@ export function McpSetup() {
     2
   );
 
-  const claudeCodeCommand = `cd /path/to/promptwatch-assignment && claude mcp add promptwatch -e API_URL=${API_URL} -- npx tsx packages/mcp/src/index.ts`;
+  const claudeCodeCommand = `claude mcp add promptwatch -e API_URL=${API_URL} -- npx tsx packages/mcp/src/index.ts`;
 
   const handleCopy = async (text: string, label: string) => {
     await navigator.clipboard.writeText(text);
@@ -60,10 +61,11 @@ export function McpSetup() {
       {/* Step 2: Claude Desktop */}
       <Step number={2} title="Claude Desktop">
         <p className="text-xs text-muted-foreground mb-2">
-          Add this to{" "}
+          Add to{" "}
           <code className="rounded bg-muted px-1 py-0.5 text-[11px] font-mono">
             ~/Library/Application Support/Claude/claude_desktop_config.json
           </code>
+          {" "}— replace <code className="rounded bg-muted px-1 py-0.5 text-[11px] font-mono">/path/to/</code> with your actual project path.
         </p>
         <CodeBlock
           text={claudeDesktopConfig}
@@ -75,7 +77,7 @@ export function McpSetup() {
       {/* Step 3: Claude Code */}
       <Step number={3} title="Claude Code">
         <p className="text-xs text-muted-foreground mb-2">
-          Run this from the project root:
+          Run from the project root:
         </p>
         <CodeBlock
           text={claudeCodeCommand}
