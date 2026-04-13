@@ -257,6 +257,9 @@ importers:
         specifier: ^3.22.4
         version: 3.25.76
     devDependencies:
+      '@types/node':
+        specifier: ^20.9.0
+        version: 20.19.9
       '@types/papaparse':
         specifier: ^5.5.2
         version: 5.5.2
