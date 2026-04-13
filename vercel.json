@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @repo/shared run build && pnpm --filter web run build",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "corepack enable && pnpm install",
+  "framework": "nextjs",
+  "rootDirectory": "apps/web"
+}
