@@ -3,5 +3,5 @@
  */
 module.exports = {
   reactStrictMode: true,
-  transpilePackages: ["@repo/shared"],
+  transpilePackages: ["@repo/shared", "@repo/api"],
 };

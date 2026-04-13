@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ../.. && pnpm --filter @repo/database run generate && pnpm --filter @repo/shared run build && pnpm --filter web run build",
+  "buildCommand": "cd ../.. && pnpm --filter @repo/database run generate && pnpm --filter @repo/shared run build && pnpm --filter @repo/api run build && pnpm --filter web run build",
   "installCommand": "corepack enable && pnpm install",
   "framework": "nextjs"
 }
