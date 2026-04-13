@@ -9,17 +9,19 @@ export function McpSetup() {
   const { apiKey } = useApiKey();
   const { toast } = useToast();
   const [copied, setCopied] = useState<string | null>(null);
+  const [projectPath, setProjectPath] = useState("");
 
   if (!apiKey) return null;
 
-  const projectPath = "/path/to/promptwatch-assignment";
+  const resolvedPath = projectPath.trim() || "/path/to/promptwatch-assignment";
+  const mcpFilePath = `${resolvedPath}/packages/mcp/src/index.ts`;
 
   const claudeDesktopConfig = JSON.stringify(
     {
       mcpServers: {
         promptwatch: {
           command: "npx",
-          args: ["tsx", `${projectPath}/packages/mcp/src/index.ts`],
+          args: ["tsx", mcpFilePath],
           env: { API_URL },
         },
       },
@@ -33,9 +35,11 @@ export function McpSetup() {
   const handleCopy = async (text: string, label: string) => {
     await navigator.clipboard.writeText(text);
     setCopied(label);
-    toast({ title: `Copied!`, variant: "success" });
+    toast({ title: "Copied!", variant: "success" });
     setTimeout(() => setCopied(null), 2000);
   };
+
+  const pathIsSet = projectPath.trim().length > 0;
 
   return (
     <div className="rounded-xl border bg-card shadow-sm p-5 space-y-5">
@@ -58,14 +62,30 @@ export function McpSetup() {
         />
       </Step>
 
-      {/* Step 2: Claude Desktop */}
-      <Step number={2} title="Claude Desktop">
+      {/* Step 2: Project path */}
+      <Step number={2} title="Your project path">
+        <p className="text-xs text-muted-foreground mb-2">
+          Enter the absolute path where you cloned the repo (run <code className="rounded bg-muted px-1 py-0.5 text-[11px] font-mono">pwd</code> in the project folder):
+        </p>
+        <input
+          type="text"
+          value={projectPath}
+          onChange={(e) => setProjectPath(e.target.value)}
+          placeholder="/Users/you/promptwatch-assignment"
+          className="w-full rounded-lg border bg-background px-3 py-2 text-xs font-mono placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+      </Step>
+
+      {/* Step 3: Claude Desktop */}
+      <Step number={3} title="Claude Desktop">
         <p className="text-xs text-muted-foreground mb-2">
           Add to{" "}
           <code className="rounded bg-muted px-1 py-0.5 text-[11px] font-mono">
             ~/Library/Application Support/Claude/claude_desktop_config.json
           </code>
-          {" "}— replace <code className="rounded bg-muted px-1 py-0.5 text-[11px] font-mono">/path/to/</code> with your actual project path.
+          {!pathIsSet && (
+            <span className="text-warning font-medium"> — enter your path above first</span>
+          )}
         </p>
         <CodeBlock
           text={claudeDesktopConfig}
@@ -74,8 +94,8 @@ export function McpSetup() {
         />
       </Step>
 
-      {/* Step 3: Claude Code */}
-      <Step number={3} title="Claude Code">
+      {/* Step 4: Claude Code */}
+      <Step number={4} title="Claude Code">
         <p className="text-xs text-muted-foreground mb-2">
           Run from the project root:
         </p>
